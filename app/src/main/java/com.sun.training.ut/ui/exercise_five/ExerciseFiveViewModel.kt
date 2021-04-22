@@ -1,6 +1,5 @@
 package com.sun.training.ut.ui.exercise_five
 
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.MutableLiveData
 import com.sun.training.ut.data.Constant
 import com.sun.training.ut.data.Constant.DEFAULT_PRICE
@@ -16,11 +15,11 @@ class ExerciseFiveViewModel : BaseViewModel() {
 
     fun calculateCouponWithPizza() {
         val typeDelivery =
-            if (isDelivery) Constant.TypeDelivery.DELIVERY else Constant.TypeDelivery.RECEIVE_AT_STORE
+                if (isDelivery) Constant.TypeDelivery.DELIVERY else Constant.TypeDelivery.RECEIVE_AT_STORE
         val pizza = Pizza(
-            bill = totalPrice,
-            typeDelivery = typeDelivery,
-            isCoupon = isVoucher
+                bill = totalPrice,
+                typeDelivery = typeDelivery,
+                isCoupon = isVoucher
         )
         var discount = ""
 
@@ -44,8 +43,16 @@ class ExerciseFiveViewModel : BaseViewModel() {
         isDelivery = isChecked
     }
 
+    fun getDelivery(): Boolean {
+        return isDelivery
+    }
+
     fun onChangedVoucher(isChecked: Boolean) {
         isVoucher = isChecked
+    }
+
+    fun getVoucher(): Boolean {
+        return isVoucher
     }
 
 }
