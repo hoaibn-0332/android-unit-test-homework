@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:calendarViewShown="false"
                 android:datePickerMode="spinner"
-                android:onDateChanged="@{(view, year, monthOfYear, dayOfMonth)->viewModel.onDateChanged(monthOfYear,dayOfMonth)}"
+                android:onDateChanged="@{(view, year, monthOfYear, dayOfMonth)->viewModel.onDateChanged(monthOfYear,dayOfMonth, year)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/view_underline" />

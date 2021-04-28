@@ -16,17 +16,19 @@ class ExerciseFourViewModel : BaseViewModel() {
     private var holidays = arrayOf("2/9", "1/1", "30/4", "1/5")
     private var dayOfMonth: Int = 0
     private var monthOfYear: Int = 0
+    private var year: Int = 0
 
     init {
         java.util.Calendar.getInstance().apply {
             dayOfMonth = get(java.util.Calendar.DAY_OF_MONTH)
             monthOfYear = get(java.util.Calendar.MONTH) + 1
+            year = get(java.util.Calendar.YEAR)
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun calculateColor() {
-        val calendar = Calendar(dayOfMonth = dayOfMonth, monthOfYear = monthOfYear)
+        val calendar = Calendar(dayOfMonth = dayOfMonth, monthOfYear = monthOfYear, year = year)
         val color = if (checkHoliday(
                 dayOfMonth = calendar.dayOfMonth,
                 monthOfYear = calendar.monthOfYear
@@ -36,14 +38,15 @@ class ExerciseFourViewModel : BaseViewModel() {
         else
             checkDay(
                 dayOfMonth = calendar.dayOfMonth,
-                monthOfYear = calendar.monthOfYear
+                monthOfYear = calendar.monthOfYear,
+                year = calendar.year
             )
         colorLiveData.postValue(color.name)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun checkDay(dayOfMonth: Int, monthOfYear: Int): Constant.Color {
-        val day = LocalDate.of(2020, monthOfYear, dayOfMonth)
+    fun checkDay(dayOfMonth: Int, monthOfYear: Int, year: Int): Constant.Color {
+        val day = LocalDate.of(year, monthOfYear, dayOfMonth)
         val d = DayOfWeek.of(day.get(ChronoField.DAY_OF_WEEK))
         return dayOfWeekToColor(d)
     }
@@ -57,9 +60,10 @@ class ExerciseFourViewModel : BaseViewModel() {
         }
     }
 
-    fun onDateChanged(monthOfYear: Int, dayOfMonth: Int) {
+    fun onDateChanged(monthOfYear: Int, dayOfMonth: Int, year: Int) {
         this.monthOfYear = monthOfYear + 1
         this.dayOfMonth = dayOfMonth
+        this.year = year
     }
 
     private fun checkHoliday(dayOfMonth: Int, monthOfYear: Int): Boolean {
