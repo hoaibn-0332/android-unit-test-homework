@@ -35,7 +35,7 @@ class ExerciseNineViewModel : BaseViewModel() {
     }
 
     private fun checkResultExerciseNine(input: No9Input): No9Result {
-        val no9Result = No9Result(findRoom = false)
+        val no9Result = No9Result(findRoom = false, inputRoom = false, beatBoss = false)
         if (input.magicWand || input.master) {
             no9Result.findRoom = true
             if (input.key == true) {
