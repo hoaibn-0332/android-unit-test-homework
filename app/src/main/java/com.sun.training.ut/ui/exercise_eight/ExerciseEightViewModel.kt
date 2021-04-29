@@ -1,5 +1,6 @@
 package com.sun.training.ut.ui.exercise_eight
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.MutableLiveData
 import com.sun.training.ut.data.Constant
 import com.sun.training.ut.data.model.No8Member
@@ -22,17 +23,24 @@ class ExerciseEightViewModel : BaseViewModel() {
 
     val fee = MutableLiveData<Int>()
 
-    fun validateMemberAge(member: No8Member?): Boolean {
-        return (member?.age in Constant.BADMINTON_MIN_AGE..Constant.BADMINTON_MAX_AGE)
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    fun validateMemberAge(): Boolean {
+        return (member.value?.age in Constant.BADMINTON_MIN_AGE..Constant.BADMINTON_MAX_AGE)
     }
 
-    fun calculateBadmintonFee() {
-        if (dayOfWeek == null) return
-        val validate = validateMemberAge(member.value)
-        member.value?.takeIf { validate }?. apply {
-            fee.value = when {
-                dayOfWeek == Constant.DayOfWeek.TUESDAY -> Constant.BADMINTON_FEE_1200
-                dayOfWeek == Constant.DayOfWeek.FRIDAY -> {
+    fun calculateBadmintonFee(): Int {
+        if (dayOfWeek == null) return Constant.DAY_OF_WEEK_EXCEPTION
+        if (!validateMemberAge()) return Constant.AGE_EXCEPTION
+        var fee = 0
+        member.value?.apply {
+            fee = when (dayOfWeek) {
+                Constant.DayOfWeek.TUESDAY -> {
+                    when {
+                        age <= 13 -> Constant.BASE_BADMINTON_FEE / 2
+                        else -> Constant.BADMINTON_FEE_1200
+                    }
+                }
+                Constant.DayOfWeek.FRIDAY -> {
                     when {
                         age <= 13 -> Constant.BASE_BADMINTON_FEE / 2
                         else -> {
@@ -56,6 +64,7 @@ class ExerciseEightViewModel : BaseViewModel() {
                 }
             }
         }
+        return fee
     }
 
     fun genderChangedMale(isChecked: Boolean) {
@@ -72,7 +81,7 @@ class ExerciseEightViewModel : BaseViewModel() {
     }
 
     fun ageChanged(newVal: Int) {
-        var gender =  Constant.Gender.MALE
+        var gender = Constant.Gender.MALE
         member.value?.apply {
             gender = this.gender
         }

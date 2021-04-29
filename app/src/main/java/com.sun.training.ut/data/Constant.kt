@@ -13,7 +13,8 @@ object Constant {
     const val BADMINTON_FEE_1600: Int = 1600
     const val BADMINTON_MIN_AGE: Int = 0
     const val BADMINTON_MAX_AGE: Int = 120
-
+    const val AGE_EXCEPTION = -1;
+    const val DAY_OF_WEEK_EXCEPTION = -2;
     enum class Gender(val type: Int) {
         MALE(1),
         FEMALE(2)
