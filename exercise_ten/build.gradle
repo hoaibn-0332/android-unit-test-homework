@@ -118,4 +118,5 @@ dependencies {
     testImplementation "org.robolectric:robolectric:4.4"
 
     testRuntimeOnly(files("$projectDir/../app/build/intermediates/app_classes/developDebug/classes.jar"))
+    testImplementation "io.mockk:mockk:1.10.0"
 }
