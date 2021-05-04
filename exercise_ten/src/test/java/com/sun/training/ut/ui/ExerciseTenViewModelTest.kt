@@ -5,22 +5,24 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.exercise_ten.R
 import com.sun.training.ut.exercise_ten.data.model.MemberClassType
 import com.sun.training.ut.exercise_ten.ui.ExerciseTenViewModel
+import io.mockk.MockKAnnotations
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
 import io.mockk.spyk
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
-import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 
 class ExerciseTenViewModelTest {
 
-    @get:Rule
+    @Rule
+    @JvmField
     val instantTaskExecutorRule: TestRule = InstantTaskExecutorRule()
 
-    @Mock
+    @MockK
     private lateinit var resource: Resources
 
     private lateinit var viewModel: ExerciseTenViewModel
@@ -29,12 +31,13 @@ class ExerciseTenViewModelTest {
     @Throws(Exception::class)
     fun setup() {
         MockitoAnnotations.initMocks(this)
+        MockKAnnotations.init(this, relaxUnitFun = true)
 
         // mock resource
-        `when`(resource.getString(R.string.ex_10_user_name_default)).thenReturn("Bach Ngoc Hoai")
-        `when`(resource.getString(R.string.ex_10_class_type_black)).thenReturn("Hạng Đen")
-        `when`(resource.getString(R.string.ex_10_class_type_gold)).thenReturn("Hạng Vàng")
-        `when`(resource.getString(R.string.ex_10_class_type_silver)).thenReturn("Hạng Bạc")
+        every { resource.getString(R.string.ex_10_user_name_default) } answers { "Bach Ngoc Hoai" }
+        every { resource.getString(R.string.ex_10_class_type_black) } answers { "Hạng Đen" }
+        every { resource.getString(R.string.ex_10_class_type_gold) } answers { "Hạng Vàng" }
+        every { resource.getString(R.string.ex_10_class_type_silver) } answers { "Hạng Bạc" }
 
         viewModel = spyk(ExerciseTenViewModel(resource))
     }
