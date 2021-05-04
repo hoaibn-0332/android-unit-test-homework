@@ -29,7 +29,7 @@ class ExerciseTenViewModel constructor(private val resources: Resources) : BaseV
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     fun discountCalculation(subTotal: Double): Double {
-        return user.value?.let { currentUser ->
+        val discount = user.value?.let { currentUser ->
             when {
                 currentUser.classType == MemberClassType.BLACK_CLASS && subTotal >= PaymentAmountPointBusiness.PAYMENT_10K -> subTotal * DiscountBusiness.BLACK_CLASS_MIN_10K_DISCOUNT_PERCENT
                 currentUser.classType == MemberClassType.BLACK_CLASS && subTotal >= PaymentAmountPointBusiness.PAYMENT_5K -> subTotal * DiscountBusiness.BLACK_CLASS_MIN_5K_DISCOUNT_PERCENT
@@ -43,6 +43,8 @@ class ExerciseTenViewModel constructor(private val resources: Resources) : BaseV
                 else -> subTotal * DiscountBusiness.UNKNOWN_CLASS_DISCOUNT_PERCENT
             }
         } ?: 0.0
+
+        return Math.round(discount * 10).toDouble() / 10
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
